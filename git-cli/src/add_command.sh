@@ -1,0 +1,2 @@
+
+git add "${other_args[@]}"

@@ -1,0 +1,97 @@
+name: git-cli
+help: Custom cli wrapper for git
+version: 0.1.0
+
+commands:
+
+- name: log 
+  alias: l
+  help: The git log command
+  catch_all: true
+  flags: 
+    - long: --graph
+      short: -g
+      help: Graph format for git log
+
+- name: status
+  alias: s
+  help: The git status command
+  catch_all: true
+
+- name: diff
+  alias: d
+  help: The git diff command
+  catch_all: true
+  examples:
+    - git diff — unstaged changes only
+    - git diff --staged — staged changes (what would be committed)
+    - git diff --stat — summary of changed files with insertions/deletions counts
+    - git diff branch1..branch2 — difference between two branches
+    - git diff HEAD~3 — changes since 3 commits ago
+
+- name: checkout
+  alias: co
+  help: The git checkout command
+  catch_all: true
+
+- name: add
+  alias: a
+  help: The git add command
+  catch_all: true
+
+- name: commit
+  alias: c
+  help: The git commit command
+  catch_all: true
+
+- name: push
+  alias: ph
+  help: The git push command
+  catch_all: true
+
+- name: pull
+  alias: pl
+  help: The git pull command
+  catch_all: true
+
+- name: fetch
+  alias: f
+  help: The git fetch command
+  catch_all: true
+
+- name: rebase
+  alias: r
+  help: The git rebase command
+  catch_all: true
+
+- name: reset
+  alias: rt
+  help: The git reset command
+  catch_all: true
+
+- name: restore
+  alias: re
+  help: The git restore command
+  catch_all: true
+
+- name: cherry-pick
+  alias: cp
+  help: The git cherry-pick command
+  catch_all: true
+
+- name: clean
+  help: Clean local git
+
+- name: update
+  alias: u
+  help: Updates a branch with the latest changes from the remote
+  args:
+    - name: branch
+      help: The branch to update
+
+- name: completions
+  help: Generate git command completions
+
+
+
+

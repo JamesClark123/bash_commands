@@ -1,0 +1,91 @@
+#!/usr/bin/env zsh
+
+# 
+# Setup ENV
+#
+
+BASH_COMMANDS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+
+#
+# Ensure system has the correct tooling installed
+#
+
+if ! command -v brew &>/dev/null; then
+  echo "Error: Homebrew is not installed. Install it from https://brew.sh" >&2
+  return 1
+fi
+
+if ! brew list bash-completion@2 &>/dev/null; then
+  echo "Installing bash-completion@2..."
+  brew install bash-completion@2
+fi
+
+if ! brew list gum &>/dev/null; then
+  echo "Installing gum..."
+  brew install gum
+fi
+
+#
+# Add cli aliases for the git-cli tool.
+#
+
+alias g="$BASH_COMMANDS_DIR/git-cli/git-cli"
+
+# 
+# Enable completions
+# 
+
+autoload -Uz +X compinit && compinit
+autoload -Uz +X bashcompinit && bashcompinit
+
+eval "$(g completions)"
+
+# #
+# # Git Aliases
+# # Shorthand aliases for common git operations.
+# #
+
+# # Log / status
+alias ggraph='g l -g'
+alias gs='g s'
+alias gds='g d --stat'
+
+# # Checkout
+alias gco='g co'
+alias gcoB='g co -B'
+
+# # Staging
+alias gau='g a -u'
+alias gaA='g a -A'
+
+# # Commit
+alias gc='g c'
+alias gca='g c --amend'
+alias gcan='g c --amend --no-edit'
+
+# # Push / pull / fetch
+alias gph='g ph'
+alias gpf='g ph -f'
+alias gpsu='g ph --set-upstream origin $(git branch --show-current | tail -n 1)'
+alias gpl='g pl'
+alias gfp='g f --prune'
+
+# # Rebase
+alias grc='g r --continue'
+alias grm-all='g r --onto main $(git merge-base HEAD main | tail -n 1) $(git branch --show-current | tail -n 1)'
+alias grm='g r --autosquash -i --onto main HEAD~1 $(git branch --show-current | tail -n 1)'
+
+# # Reset / restore
+alias grh="g rt --hard origin/$(git branch --show-current | tail -n 1)"
+alias grestA='g re "*"'
+
+# # Cherry-pick
+alias gcp='g cp'
+
+# # Branch cleanup — deletes local branches whose upstream is gone
+alias gclean="g clean"
+
+# # Update main and return to previous branch
+alias gupdate='g update'
+alias gupm='g update main'
+
