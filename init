@@ -15,15 +15,28 @@ if ! command -v brew &>/dev/null; then
   return 1
 fi
 
-if ! brew list bash-completion@2 &>/dev/null; then
+if ! command -v bash-completion@2 &>/dev/null && ! brew list bash-completion@2 &>/dev/null; then
   echo "Installing bash-completion@2..."
   brew install bash-completion@2
 fi
 
-if ! brew list gum &>/dev/null; then
+if ! command -v gum &>/dev/null && ! brew list gum &>/dev/null; then
   echo "Installing gum..."
   brew install gum
 fi
+
+if ! command -v starship &>/dev/null && ! brew list starship &>/dev/null; then
+  echo "Installing starship..."
+  brew install starship
+fi
+
+# 
+# Enable starship
+# See: https://starship.rs/config
+# 
+eval "$(starship init zsh)"
+
+export STARSHIP_CONFIG="$BASH_COMMANDS_DIR/config.starship.toml" 
 
 #
 # Add cli aliases for the git-cli tool.
@@ -46,7 +59,7 @@ eval "$(g completions)"
 # #
 
 # # Log / status
-alias ggraph='g l -g'
+alias glg='g l -g'
 alias gs='g s'
 alias gds='g d --stat'
 
