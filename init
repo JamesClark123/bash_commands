@@ -56,7 +56,7 @@ eval "$(g completions)"
 # #
 # # Git Aliases
 # # Shorthand aliases for common git operations.
-# #
+# # 
 
 # # Log / status
 alias glg='g l -g'
