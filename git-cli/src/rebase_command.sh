@@ -1,7 +1,7 @@
 
 custom_args=()
 
-if [[ ${#other_custom_args[@]} -eq 0 ]]; then
+if [[ ${#other_args[@]} -eq 0 ]]; then
     targetOptions=(main Select)
     targetMode=$(gum choose "${targetOptions[@]}" --header "Select rebase target mode" --limit 1)
     target="main"
