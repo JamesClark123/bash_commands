@@ -88,6 +88,11 @@ commands:
   args:
     - name: branch
       help: The branch to update
+  flags:
+    - long: --stay
+      short: -s
+      help: Stay on the current branch after updating
+      default: false
 
 - name: completions
   help: Generate git command completions

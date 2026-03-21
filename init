@@ -99,6 +99,8 @@ alias gcp='g cp'
 alias gclean="g clean"
 
 # # Update main and return to previous branch
-alias gupdate='g update'
+alias gup='g update'
 alias gupm='g update main'
+alias gups='g update --stay'
+alias gupms='g update main --stay'
 
