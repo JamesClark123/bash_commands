@@ -79,11 +79,17 @@ alias gcan='g c --amend --no-edit'
 # # Push / pull / fetch
 alias gph='g ph'
 alias gpf='g ph -f'
+alias gpt='g ph origin --tags'
 alias gpsu='g ph --set-upstream origin $(git branch --show-current | tail -n 1)'
 alias gpl='g pl'
 alias gfp='g f --prune'
 
+# # Tags
+alias gt='g t'
+alias gts='g t --sync'
+
 # # Rebase
+alias gr='g r'
 alias grc='g r --continue'
 alias grm-all='g r --onto main $(git merge-base HEAD main | tail -n 1) $(git branch --show-current | tail -n 1)'
 alias grm='g r --autosquash -i --onto main HEAD~1 $(git branch --show-current | tail -n 1)'

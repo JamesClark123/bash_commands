@@ -1,8 +1,6 @@
 
 branch="${args[branch]}"
 
-stay="${args[--stay]}"
-
 if [[ -z ${args[branch]} ]]; then
   branches=($(git branch --format='%(refname:short)'))
   branch=$(gum choose "${branches[@]}" --header "Select a branch to update")
@@ -12,6 +10,6 @@ git checkout "$branch"
 git fetch --prune
 git pull
 
-if [[ "$stay" == "false" ]]; then
+if [[ ${args[--stay]} == 0 || -z ${args[--stay]} ]]; then
   git checkout -
 fi

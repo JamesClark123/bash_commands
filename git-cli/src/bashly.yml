@@ -79,6 +79,15 @@ commands:
   help: The git cherry-pick command
   catch_all: true
 
+- name: tag
+  alias: t
+  help: The git tag command
+  catch_all: true
+  flags:
+    - long: --sync
+      short: -s
+      help: Sync tags with remote after creating a new tag
+
 - name: clean
   help: Clean local git
 
@@ -92,11 +101,6 @@ commands:
     - long: --stay
       short: -s
       help: Stay on the current branch after updating
-      default: false
 
 - name: completions
   help: Generate git command completions
-
-
-
-

@@ -39,6 +39,7 @@ git_cli_usage() {
   printf "  %s   The git reset command\n" "reset      "
   printf "  %s   The git restore command\n" "restore    "
   printf "  %s   The git cherry-pick command\n" "cherry-pick"
+  printf "  %s   The git tag command\n" "tag        "
   printf "  %s   Clean local git\n" "clean      "
   printf "  %s   Updates a branch with the latest changes from the remote\n" "update     "
   printf "  %s   Generate git command completions\n" "completions"
@@ -388,6 +389,30 @@ git_cli_cherry_pick_usage() {
 }
 
 # :command.usage
+git_cli_tag_usage() {
+  printf "git-cli tag - The git tag command\n\n"
+  printf "Alias: t\n"
+  echo
+
+  printf "%s\n" "Usage:"
+  printf "  git-cli tag [--] [...]\n"
+  printf "  git-cli tag --help | -h\n"
+  echo
+
+  # :command.long_usage
+  if [[ -n "$long_usage" ]]; then
+    # :command.usage_options
+    printf "%s\n" "Options:"
+
+    # :command.usage_fixed_flags
+    printf "  %s\n" "--help, -h"
+    printf "    Show this help\n"
+    echo
+
+  fi
+}
+
+# :command.usage
 git_cli_clean_usage() {
   printf "git-cli clean - Clean local git\n\n"
 
@@ -713,11 +738,11 @@ send_completions() {
   echo $'  COMPREPLY=()'
   echo $''
   echo $'  case "$compline" in'
-  echo $'    \'completions\'*)'
+  echo $'    \'cherry-pick\'*)'
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
   echo $'      ;;'
   echo $''
-  echo $'    \'cherry-pick\'*)'
+  echo $'    \'completions\'*)'
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
   echo $'      ;;'
   echo $''
@@ -729,14 +754,6 @@ send_completions() {
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
   echo $'      ;;'
   echo $''
-  echo $'    \'update\'*)'
-  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help --stay -h -s")" -- "$cur")'
-  echo $'      ;;'
-  echo $''
-  echo $'    \'status\'*)'
-  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
-  echo $'      ;;'
-  echo $''
   echo $'    \'rebase\'*)'
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
   echo $'      ;;'
@@ -745,11 +762,15 @@ send_completions() {
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
   echo $'      ;;'
   echo $''
-  echo $'    \'clean\'*)'
+  echo $'    \'status\'*)'
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
   echo $'      ;;'
   echo $''
-  echo $'    \'reset\'*)'
+  echo $'    \'update\'*)'
+  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help --stay -h -s")" -- "$cur")'
+  echo $'      ;;'
+  echo $''
+  echo $'    \'clean\'*)'
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
   echo $'      ;;'
   echo $''
@@ -757,11 +778,7 @@ send_completions() {
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
   echo $'      ;;'
   echo $''
-  echo $'    \'pull\'*)'
-  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
-  echo $'      ;;'
-  echo $''
-  echo $'    \'push\'*)'
+  echo $'    \'reset\'*)'
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
   echo $'      ;;'
   echo $''
@@ -769,31 +786,27 @@ send_completions() {
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
   echo $'      ;;'
   echo $''
-  echo $'    \'log\'*)'
-  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--graph --help -g -h")" -- "$cur")'
+  echo $'    \'push\'*)'
+  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
+  echo $'      ;;'
+  echo $''
+  echo $'    \'pull\'*)'
+  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
+  echo $'      ;;'
+  echo $''
+  echo $'    \'tag\'*)'
+  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
   echo $'      ;;'
   echo $''
   echo $'    \'add\'*)'
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
   echo $'      ;;'
   echo $''
-  echo $'    \'ph\'*)'
-  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
-  echo $'      ;;'
-  echo $''
-  echo $'    \'pl\'*)'
-  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
-  echo $'      ;;'
-  echo $''
-  echo $'    \'co\'*)'
-  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
+  echo $'    \'log\'*)'
+  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--graph --help -g -h")" -- "$cur")'
   echo $'      ;;'
   echo $''
   echo $'    \'cp\'*)'
-  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
-  echo $'      ;;'
-  echo $''
-  echo $'    \'rt\'*)'
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
   echo $'      ;;'
   echo $''
@@ -801,19 +814,19 @@ send_completions() {
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
   echo $'      ;;'
   echo $''
-  echo $'    \'u\'*)'
-  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help --stay -h -s")" -- "$cur")'
-  echo $'      ;;'
-  echo $''
-  echo $'    \'l\'*)'
-  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--graph --help -g -h")" -- "$cur")'
-  echo $'      ;;'
-  echo $''
-  echo $'    \'s\'*)'
+  echo $'    \'rt\'*)'
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
   echo $'      ;;'
   echo $''
-  echo $'    \'d\'*)'
+  echo $'    \'pl\'*)'
+  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
+  echo $'      ;;'
+  echo $''
+  echo $'    \'ph\'*)'
+  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
+  echo $'      ;;'
+  echo $''
+  echo $'    \'co\'*)'
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
   echo $'      ;;'
   echo $''
@@ -825,16 +838,36 @@ send_completions() {
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
   echo $'      ;;'
   echo $''
-  echo $'    \'a\'*)'
-  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
-  echo $'      ;;'
-  echo $''
   echo $'    \'c\'*)'
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
   echo $'      ;;'
   echo $''
+  echo $'    \'a\'*)'
+  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
+  echo $'      ;;'
+  echo $''
+  echo $'    \'d\'*)'
+  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
+  echo $'      ;;'
+  echo $''
+  echo $'    \'t\'*)'
+  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
+  echo $'      ;;'
+  echo $''
+  echo $'    \'s\'*)'
+  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help -h")" -- "$cur")'
+  echo $'      ;;'
+  echo $''
+  echo $'    \'l\'*)'
+  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--graph --help -g -h")" -- "$cur")'
+  echo $'      ;;'
+  echo $''
+  echo $'    \'u\'*)'
+  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help --stay -h -s")" -- "$cur")'
+  echo $'      ;;'
+  echo $''
   echo $'    *)'
-  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help --version -h -v a add c checkout cherry-pick clean co commit completions cp d diff f fetch l log ph pl pull push r re rebase reset restore rt s status u update")" -- "$cur")'
+  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_git-cli_completions_filter "--help --version -h -v a add c checkout cherry-pick clean co commit completions cp d diff f fetch l log ph pl pull push r re rebase reset restore rt s status t tag u update")" -- "$cur")'
   echo $'      ;;'
   echo $''
   echo $'  esac'
@@ -1022,11 +1055,23 @@ git_cli_cherry_pick_command() {
 }
 
 # :command.function
+git_cli_tag_command() {
+
+  # src/tag_command.sh
+  echo "# This file is located at 'src/tag_command.sh'."
+  echo "# It contains the implementation for the 'git-cli tag' command."
+  echo "# The code you write here will be wrapped by a function named 'git_cli_tag_command()'."
+  echo "# Feel free to edit this file; your changes will persist when regenerating."
+  inspect_args
+
+}
+
+# :command.function
 git_cli_clean_command() {
 
   # src/clean_command.sh
 
-  git fetch --prune
+  git fetch --prune --prune-tags
 
   allTargets=$(git for-each-ref --format '%(refname) %(upstream:track)' refs/heads | awk '$2 == "[gone]" {sub("refs/heads/", "", $1); print $1}')
 
@@ -1046,8 +1091,6 @@ git_cli_update_command() {
 
   branch="${args[branch]}"
 
-  stay="${args[--stay]}"
-
   if [[ -z ${args[branch]} ]]; then
     branches=($(git branch --format='%(refname:short)'))
     branch=$(gum choose "${branches[@]}" --header "Select a branch to update")
@@ -1057,7 +1100,7 @@ git_cli_update_command() {
   git fetch --prune
   git pull
 
-  if [[ "$stay" == "false" ]]; then
+  if [[ ${args[--stay]} == 0 || -z ${args[--stay]} ]]; then
     git checkout -
   fi
 
@@ -1192,6 +1235,13 @@ parse_requirements() {
       action="cherry-pick"
       shift
       git_cli_cherry_pick_parse_requirements "$@"
+      shift $#
+      ;;
+
+    tag | t)
+      action="tag"
+      shift
+      git_cli_tag_parse_requirements "$@"
       shift $#
       ;;
 
@@ -1949,6 +1999,59 @@ git_cli_cherry_pick_parse_requirements() {
 }
 
 # :command.parse_requirements
+git_cli_tag_parse_requirements() {
+  local key
+
+  # :command.fixed_flags_filter
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+      --help | -h)
+        long_usage=yes
+        git_cli_tag_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  # :command.command_filter
+  action="tag"
+
+  # :command.parse_requirements_while
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+
+      --)
+        shift
+        other_args+=("$@")
+        break
+        ;;
+
+      -?*)
+        other_args+=("$1")
+        shift
+        ;;
+
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_catch_all
+        other_args+=("$1")
+        shift
+
+        ;;
+
+    esac
+  done
+
+}
+
+# :command.parse_requirements
 git_cli_clean_parse_requirements() {
   local key
 
@@ -2136,6 +2239,7 @@ run() {
     "reset") git_cli_reset_command ;;
     "restore") git_cli_restore_command ;;
     "cherry-pick") git_cli_cherry_pick_command ;;
+    "tag") git_cli_tag_command ;;
     "clean") git_cli_clean_command ;;
     "update") git_cli_update_command ;;
     "completions") git_cli_completions_command ;;

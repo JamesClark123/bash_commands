@@ -1,6 +1,6 @@
 
 
-git fetch --prune
+git fetch --prune --prune-tags
 
 allTargets=$(git for-each-ref --format '%(refname) %(upstream:track)' refs/heads | awk '$2 == "[gone]" {sub("refs/heads/", "", $1); print $1}')
 
