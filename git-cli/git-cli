@@ -26,23 +26,23 @@ git_cli_usage() {
   echo
   # :command.usage_commands
   printf "%s\n" "Commands:"
-  printf "  %s   The git log command\n" "log        "
-  printf "  %s   The git status command\n" "status     "
-  printf "  %s   The git diff command\n" "diff       "
-  printf "  %s   The git checkout command\n" "checkout   "
-  printf "  %s   The git add command\n" "add        "
-  printf "  %s   The git commit command\n" "commit     "
-  printf "  %s   The git push command\n" "push       "
-  printf "  %s   The git pull command\n" "pull       "
-  printf "  %s   The git fetch command\n" "fetch      "
-  printf "  %s   The git rebase command\n" "rebase     "
-  printf "  %s   The git reset command\n" "reset      "
-  printf "  %s   The git restore command\n" "restore    "
-  printf "  %s   The git cherry-pick command\n" "cherry-pick"
-  printf "  %s   The git tag command\n" "tag        "
-  printf "  %s   Clean local git\n" "clean      "
-  printf "  %s   Updates a branch with the latest changes from the remote\n" "update     "
-  printf "  %s   Generate git command completions\n" "completions"
+  printf "  %s   Show the commit history.\n" "log        "
+  printf "  %s   Show the working tree status.\n" "status     "
+  printf "  %s   Show changes between commits, branches, the index and the working tree.\n" "diff       "
+  printf "  %s   Switch branches or restore working tree files.\n" "checkout   "
+  printf "  %s   Stage file contents for the next commit.\n" "add        "
+  printf "  %s   Record staged changes to the repository.\n" "commit     "
+  printf "  %s   Update remote refs along with associated objects.\n" "push       "
+  printf "  %s   Fetch from and integrate with another repository or local branch.\n" "pull       "
+  printf "  %s   Download objects and refs from another repository.\n" "fetch      "
+  printf "  %s   Reapply commits on top of another base.\n" "rebase     "
+  printf "  %s   Reset the current HEAD to a specified state.\n" "reset      "
+  printf "  %s   Restore working tree files.\n" "restore    "
+  printf "  %s   Apply the changes introduced by existing commits.\n" "cherry-pick"
+  printf "  %s   Create, list, or delete tags.\n" "tag        "
+  printf "  %s   Prune and delete merged local branches.\n" "clean      "
+  printf "  %s   Update a branch with the latest changes from the remote.\n" "update     "
+  printf "  %s   Generate shell completion definitions for the git-cli tool.\n" "completions"
   echo
 
   # :command.long_usage
@@ -63,7 +63,12 @@ git_cli_usage() {
 
 # :command.usage
 git_cli_log_usage() {
-  printf "git-cli log - The git log command\n\n"
+  if [[ -n $long_usage ]]; then
+    printf "git-cli log\n\n"
+    printf "  Show the commit history.\n  Passes through to \`git log\` and accepts any of its flags/args.\n  Use -g for a decorated, one-line graph view of the history.\n\n"
+  else
+    printf "git-cli log - Show the commit history.\n\n"
+  fi
   printf "Alias: l\n"
   echo
 
@@ -80,7 +85,7 @@ git_cli_log_usage() {
     # :command.usage_flags
     # :flag.usage
     printf "  %s\n" "--graph, -g"
-    printf "    Graph format for git log\n"
+    printf "    Show history as a one-line decorated commit graph\n"
     echo
 
     # :command.usage_fixed_flags
@@ -88,12 +93,25 @@ git_cli_log_usage() {
     printf "    Show this help\n"
     echo
 
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  g l                     # recent commits (shell alias: gl)\n"
+    printf "  g l -g                  # one-line graph view (shell alias: glg)\n"
+    printf "  g l --oneline -10       # last 10 commits, condensed\n"
+    printf "  g l main..HEAD          # commits on this branch not yet on main\n"
+    echo
+
   fi
 }
 
 # :command.usage
 git_cli_status_usage() {
-  printf "git-cli status - The git status command\n\n"
+  if [[ -n $long_usage ]]; then
+    printf "git-cli status\n\n"
+    printf "  Show the working tree status.\n  Passes through to \`git status\` and accepts any of its flags/args.\n\n"
+  else
+    printf "git-cli status - Show the working tree status.\n\n"
+  fi
   printf "Alias: s\n"
   echo
 
@@ -112,12 +130,24 @@ git_cli_status_usage() {
     printf "    Show this help\n"
     echo
 
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  g s                     # working tree status (shell alias: gs)\n"
+    printf "  g s -s                  # short-format status\n"
+    printf "  g s -b                  # include branch and tracking info\n"
+    echo
+
   fi
 }
 
 # :command.usage
 git_cli_diff_usage() {
-  printf "git-cli diff - The git diff command\n\n"
+  if [[ -n $long_usage ]]; then
+    printf "git-cli diff\n\n"
+    printf "  Show changes between commits, branches, the index and the working tree.\n  Passes through to \`git diff\` and accepts any of its flags/args.\n\n"
+  else
+    printf "git-cli diff - Show changes between commits, branches, the index and the working tree.\n\n"
+  fi
   printf "Alias: d\n"
   echo
 
@@ -138,11 +168,11 @@ git_cli_diff_usage() {
 
     # :command.usage_examples
     printf "%s\n" "Examples:"
-    printf "  git diff — unstaged changes only\n"
-    printf "  git diff --staged — staged changes (what would be committed)\n"
-    printf "  git diff --stat — summary of changed files with insertions/deletions counts\n"
-    printf "  git diff branch1..branch2 — difference between two branches\n"
-    printf "  git diff HEAD~3 — changes since 3 commits ago\n"
+    printf "  g d                     # unstaged changes only\n"
+    printf "  g d --staged            # staged changes (what would be committed)\n"
+    printf "  g d --stat              # summary of changed files (shell alias: gds)\n"
+    printf "  g d branch1..branch2    # difference between two branches\n"
+    printf "  g d HEAD~3              # changes since 3 commits ago\n"
     echo
 
   fi
@@ -150,7 +180,12 @@ git_cli_diff_usage() {
 
 # :command.usage
 git_cli_checkout_usage() {
-  printf "git-cli checkout - The git checkout command\n\n"
+  if [[ -n $long_usage ]]; then
+    printf "git-cli checkout\n\n"
+    printf "  Switch branches or restore working tree files.\n  Passes through to \`git checkout\` and accepts any of its flags/args.\n\n"
+  else
+    printf "git-cli checkout - Switch branches or restore working tree files.\n\n"
+  fi
   printf "Alias: co\n"
   echo
 
@@ -169,12 +204,25 @@ git_cli_checkout_usage() {
     printf "    Show this help\n"
     echo
 
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  g co main               # switch to the main branch (shell alias: gco)\n"
+    printf "  g co -                  # switch back to the previous branch\n"
+    printf "  g co -b feature/login   # create and switch to a new branch\n"
+    printf "  g co -B feature/login   # create or reset a branch, then switch (shell alias:\n  gcoB)\n"
+    echo
+
   fi
 }
 
 # :command.usage
 git_cli_add_usage() {
-  printf "git-cli add - The git add command\n\n"
+  if [[ -n $long_usage ]]; then
+    printf "git-cli add\n\n"
+    printf "  Stage file contents for the next commit.\n  Passes through to \`git add\` and accepts any of its flags/args.\n\n"
+  else
+    printf "git-cli add - Stage file contents for the next commit.\n\n"
+  fi
   printf "Alias: a\n"
   echo
 
@@ -193,12 +241,25 @@ git_cli_add_usage() {
     printf "    Show this help\n"
     echo
 
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  g a .                   # stage everything in the current directory\n"
+    printf "  g a -u                  # stage modified/deleted tracked files (shell alias:\n  gau)\n"
+    printf "  g a -A                  # stage all changes, including new files (shell alias:\n  gaA)\n"
+    printf "  g a -p                  # interactively stage hunks\n"
+    echo
+
   fi
 }
 
 # :command.usage
 git_cli_commit_usage() {
-  printf "git-cli commit - The git commit command\n\n"
+  if [[ -n $long_usage ]]; then
+    printf "git-cli commit\n\n"
+    printf "  Record staged changes to the repository.\n  With no arguments, opens an interactive picker (Amend, Amend no edit,\n  Fixup, Squash) to build the commit for you. Otherwise passes through to\n  \`git commit\` with any flags/args you supply.\n\n"
+  else
+    printf "git-cli commit - Record staged changes to the repository.\n\n"
+  fi
   printf "Alias: c\n"
   echo
 
@@ -217,12 +278,25 @@ git_cli_commit_usage() {
     printf "    Show this help\n"
     echo
 
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  g c                     # interactive commit-type picker\n"
+    printf "  g c -m \"fix: typo\"      # commit staged changes with a message\n"
+    printf "  g c --amend             # amend the previous commit (shell alias: gca)\n"
+    printf "  g c --amend --no-edit   # amend without editing the message (shell alias:\n  gcan)\n"
+    echo
+
   fi
 }
 
 # :command.usage
 git_cli_push_usage() {
-  printf "git-cli push - The git push command\n\n"
+  if [[ -n $long_usage ]]; then
+    printf "git-cli push\n\n"
+    printf "  Update remote refs along with associated objects.\n  Passes through to \`git push\` and accepts any of its flags/args.\n\n"
+  else
+    printf "git-cli push - Update remote refs along with associated objects.\n\n"
+  fi
   printf "Alias: ph\n"
   echo
 
@@ -241,12 +315,25 @@ git_cli_push_usage() {
     printf "    Show this help\n"
     echo
 
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  g ph                    # push current branch (shell alias: gph)\n"
+    printf "  g ph -f                 # force push (shell alias: gpf)\n"
+    printf "  g ph origin --tags      # push all tags (shell alias: gpt)\n"
+    printf "  g ph --set-upstream origin <branch>   # push and set upstream (shell alias:\n  gpsu)\n"
+    echo
+
   fi
 }
 
 # :command.usage
 git_cli_pull_usage() {
-  printf "git-cli pull - The git pull command\n\n"
+  if [[ -n $long_usage ]]; then
+    printf "git-cli pull\n\n"
+    printf "  Fetch from and integrate with another repository or local branch.\n  Passes through to \`git pull\` and accepts any of its flags/args.\n\n"
+  else
+    printf "git-cli pull - Fetch from and integrate with another repository or local branch.\n\n"
+  fi
   printf "Alias: pl\n"
   echo
 
@@ -265,12 +352,24 @@ git_cli_pull_usage() {
     printf "    Show this help\n"
     echo
 
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  g pl                    # pull the current branch (shell alias: gpl)\n"
+    printf "  g pl --rebase           # pull and rebase local commits on top\n"
+    printf "  g pl origin main        # pull a specific remote branch\n"
+    echo
+
   fi
 }
 
 # :command.usage
 git_cli_fetch_usage() {
-  printf "git-cli fetch - The git fetch command\n\n"
+  if [[ -n $long_usage ]]; then
+    printf "git-cli fetch\n\n"
+    printf "  Download objects and refs from another repository.\n  Passes through to \`git fetch\` and accepts any of its flags/args.\n\n"
+  else
+    printf "git-cli fetch - Download objects and refs from another repository.\n\n"
+  fi
   printf "Alias: f\n"
   echo
 
@@ -289,12 +388,24 @@ git_cli_fetch_usage() {
     printf "    Show this help\n"
     echo
 
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  g f                     # fetch from the default remote\n"
+    printf "  g f --prune             # fetch and remove stale remote refs (shell alias:\n  gfp)\n"
+    printf "  g f --all               # fetch from all remotes\n"
+    echo
+
   fi
 }
 
 # :command.usage
 git_cli_rebase_usage() {
-  printf "git-cli rebase - The git rebase command\n\n"
+  if [[ -n $long_usage ]]; then
+    printf "git-cli rebase\n\n"
+    printf "  Reapply commits on top of another base.\n  With no arguments, walks you through an interactive flow: pick a target\n  branch, then a base (merge-base, HEAD~, or a commit chosen from the log)\n  and rebases the current branch onto it with --autosquash. Otherwise passes\n  through to \`git rebase\` with any flags/args you supply.\n\n"
+  else
+    printf "git-cli rebase - Reapply commits on top of another base.\n\n"
+  fi
   printf "Alias: r\n"
   echo
 
@@ -313,12 +424,25 @@ git_cli_rebase_usage() {
     printf "    Show this help\n"
     echo
 
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  g r                     # interactive guided rebase (shell alias: gr)\n"
+    printf "  g r --continue          # continue after resolving conflicts (shell alias:\n  grc)\n"
+    printf "  g r --abort             # cancel an in-progress rebase\n"
+    printf "  g r --autosquash -i --onto main HEAD~1 <branch>   # squash onto main (shell\n  alias: grm)\n"
+    echo
+
   fi
 }
 
 # :command.usage
 git_cli_reset_usage() {
-  printf "git-cli reset - The git reset command\n\n"
+  if [[ -n $long_usage ]]; then
+    printf "git-cli reset\n\n"
+    printf "  Reset the current HEAD to a specified state.\n  Passes through to \`git reset\` and accepts any of its flags/args.\n\n"
+  else
+    printf "git-cli reset - Reset the current HEAD to a specified state.\n\n"
+  fi
   printf "Alias: rt\n"
   echo
 
@@ -337,12 +461,24 @@ git_cli_reset_usage() {
     printf "    Show this help\n"
     echo
 
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  g rt HEAD~1             # undo last commit, keep changes in the working tree\n"
+    printf "  g rt --soft HEAD~1      # undo last commit, keep changes staged\n"
+    printf "  g rt --hard origin/<branch>   # discard local changes to match remote (shell\n  alias: grh)\n"
+    echo
+
   fi
 }
 
 # :command.usage
 git_cli_restore_usage() {
-  printf "git-cli restore - The git restore command\n\n"
+  if [[ -n $long_usage ]]; then
+    printf "git-cli restore\n\n"
+    printf "  Restore working tree files.\n  Passes through to \`git restore\` and accepts any of its flags/args.\n\n"
+  else
+    printf "git-cli restore - Restore working tree files.\n\n"
+  fi
   printf "Alias: re\n"
   echo
 
@@ -361,12 +497,24 @@ git_cli_restore_usage() {
     printf "    Show this help\n"
     echo
 
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  g re file.txt           # discard unstaged changes to a file\n"
+    printf "  g re --staged file.txt  # unstage a file, keeping its changes\n"
+    printf "  g re \"*\"                # discard all unstaged changes (shell alias: grestA)\n"
+    echo
+
   fi
 }
 
 # :command.usage
 git_cli_cherry_pick_usage() {
-  printf "git-cli cherry-pick - The git cherry-pick command\n\n"
+  if [[ -n $long_usage ]]; then
+    printf "git-cli cherry-pick\n\n"
+    printf "  Apply the changes introduced by existing commits.\n  Passes through to \`git cherry-pick\` and accepts any of its flags/args.\n\n"
+  else
+    printf "git-cli cherry-pick - Apply the changes introduced by existing commits.\n\n"
+  fi
   printf "Alias: cp\n"
   echo
 
@@ -385,12 +533,25 @@ git_cli_cherry_pick_usage() {
     printf "    Show this help\n"
     echo
 
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  g cp <commit>           # apply a commit onto the current branch (shell alias:\n  gcp)\n"
+    printf "  g cp <commitA> <commitB>   # cherry-pick multiple commits\n"
+    printf "  g cp --continue         # continue after resolving conflicts\n"
+    printf "  g cp --abort            # cancel the cherry-pick\n"
+    echo
+
   fi
 }
 
 # :command.usage
 git_cli_tag_usage() {
-  printf "git-cli tag - The git tag command\n\n"
+  if [[ -n $long_usage ]]; then
+    printf "git-cli tag\n\n"
+    printf "  Create, list, or delete tags.\n  Passes through to \`git tag\`. With --sync, pushes all tags to origin\n  after the tag operation completes.\n\n"
+  else
+    printf "git-cli tag - Create, list, or delete tags.\n\n"
+  fi
   printf "Alias: t\n"
   echo
 
@@ -407,7 +568,7 @@ git_cli_tag_usage() {
     # :command.usage_flags
     # :flag.usage
     printf "  %s\n" "--sync, -s"
-    printf "    Sync tags with remote after creating a new tag\n"
+    printf "    Push all tags to origin after creating the tag\n"
     echo
 
     # :command.usage_fixed_flags
@@ -415,12 +576,25 @@ git_cli_tag_usage() {
     printf "    Show this help\n"
     echo
 
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  g t                     # list existing tags (shell alias: gt)\n"
+    printf "  g t v1.2.0              # create a lightweight tag\n"
+    printf "  g t v1.2.0 --sync       # create a tag and push tags to origin (shell alias:\n  gts)\n"
+    printf "  g t -d v1.2.0           # delete a local tag\n"
+    echo
+
   fi
 }
 
 # :command.usage
 git_cli_clean_usage() {
-  printf "git-cli clean - Clean local git\n\n"
+  if [[ -n $long_usage ]]; then
+    printf "git-cli clean\n\n"
+    printf "  Prune and delete merged local branches.\n  Fetches with --prune, then finds local branches whose upstream is gone\n  ([gone]) and lets you choose which to delete (select none to delete all).\n\n"
+  else
+    printf "git-cli clean - Prune and delete merged local branches.\n\n"
+  fi
 
   printf "%s\n" "Usage:"
   printf "  git-cli clean\n"
@@ -437,12 +611,22 @@ git_cli_clean_usage() {
     printf "    Show this help\n"
     echo
 
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  g clean                 # prune remotes and delete gone branches (shell alias:\n  gclean)\n"
+    echo
+
   fi
 }
 
 # :command.usage
 git_cli_update_usage() {
-  printf "git-cli update - Updates a branch with the latest changes from the remote\n\n"
+  if [[ -n $long_usage ]]; then
+    printf "git-cli update\n\n"
+    printf "  Update a branch with the latest changes from the remote.\n  Checks out the branch (interactive picker if none is given), fetches with\n  --prune, and pulls. Returns to your previous branch afterwards unless\n  --stay is set.\n\n"
+  else
+    printf "git-cli update - Update a branch with the latest changes from the remote.\n\n"
+  fi
   printf "Alias: u\n"
   echo
 
@@ -459,7 +643,7 @@ git_cli_update_usage() {
     # :command.usage_flags
     # :flag.usage
     printf "  %s\n" "--stay, -s"
-    printf "    Stay on the current branch after updating\n"
+    printf "    Stay on the updated branch instead of returning to the previous one\n"
     echo
 
     # :command.usage_fixed_flags
@@ -472,7 +656,15 @@ git_cli_update_usage() {
 
     # :argument.usage
     printf "  %s\n" "BRANCH"
-    printf "    The branch to update\n"
+    printf "    The branch to update (omit to pick interactively)\n"
+    echo
+
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  g update                # pick a branch to update, then return (shell alias:\n  gup)\n"
+    printf "  g update main           # update main, then return (shell alias: gupm)\n"
+    printf "  g update --stay         # update a chosen branch and stay on it (shell alias:\n  gups)\n"
+    printf "  g update main --stay    # update main and stay on it (shell alias: gupms)\n"
     echo
 
   fi
@@ -480,7 +672,12 @@ git_cli_update_usage() {
 
 # :command.usage
 git_cli_completions_usage() {
-  printf "git-cli completions - Generate git command completions\n\n"
+  if [[ -n $long_usage ]]; then
+    printf "git-cli completions\n\n"
+    printf "  Generate shell completion definitions for the git-cli tool.\n  Intended to be evaluated from your shell profile, e.g. eval \"$(g\n  completions)\".\n\n"
+  else
+    printf "git-cli completions - Generate shell completion definitions for the git-cli tool.\n\n"
+  fi
 
   printf "%s\n" "Usage:"
   printf "  git-cli completions\n"
@@ -495,6 +692,11 @@ git_cli_completions_usage() {
     # :command.usage_fixed_flags
     printf "  %s\n" "--help, -h"
     printf "    Show this help\n"
+    echo
+
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  eval \"$(g completions)\"   # load completions in the current shell\n"
     echo
 
   fi

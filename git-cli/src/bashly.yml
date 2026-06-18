@@ -4,103 +4,216 @@ version: 0.1.0
 
 commands:
 
-- name: log 
+- name: log
   alias: l
-  help: The git log command
+  help: |-
+    Show the commit history.
+    Passes through to `git log` and accepts any of its flags/args.
+    Use -g for a decorated, one-line graph view of the history.
   catch_all: true
-  flags: 
+  flags:
     - long: --graph
       short: -g
-      help: Graph format for git log
+      help: Show history as a one-line decorated commit graph
+  examples:
+    - 'g l                     # recent commits (shell alias: gl)'
+    - 'g l -g                  # one-line graph view (shell alias: glg)'
+    - 'g l --oneline -10       # last 10 commits, condensed'
+    - 'g l main..HEAD          # commits on this branch not yet on main'
 
 - name: status
   alias: s
-  help: The git status command
+  help: |-
+    Show the working tree status.
+    Passes through to `git status` and accepts any of its flags/args.
   catch_all: true
+  examples:
+    - 'g s                     # working tree status (shell alias: gs)'
+    - 'g s -s                  # short-format status'
+    - 'g s -b                  # include branch and tracking info'
 
 - name: diff
   alias: d
-  help: The git diff command
+  help: |-
+    Show changes between commits, branches, the index and the working tree.
+    Passes through to `git diff` and accepts any of its flags/args.
   catch_all: true
   examples:
-    - git diff — unstaged changes only
-    - git diff --staged — staged changes (what would be committed)
-    - git diff --stat — summary of changed files with insertions/deletions counts
-    - git diff branch1..branch2 — difference between two branches
-    - git diff HEAD~3 — changes since 3 commits ago
+    - 'g d                     # unstaged changes only'
+    - 'g d --staged            # staged changes (what would be committed)'
+    - 'g d --stat              # summary of changed files (shell alias: gds)'
+    - 'g d branch1..branch2    # difference between two branches'
+    - 'g d HEAD~3              # changes since 3 commits ago'
 
 - name: checkout
   alias: co
-  help: The git checkout command
+  help: |-
+    Switch branches or restore working tree files.
+    Passes through to `git checkout` and accepts any of its flags/args.
   catch_all: true
+  examples:
+    - 'g co main               # switch to the main branch (shell alias: gco)'
+    - 'g co -                  # switch back to the previous branch'
+    - 'g co -b feature/login   # create and switch to a new branch'
+    - 'g co -B feature/login   # create or reset a branch, then switch (shell alias: gcoB)'
 
 - name: add
   alias: a
-  help: The git add command
+  help: |-
+    Stage file contents for the next commit.
+    Passes through to `git add` and accepts any of its flags/args.
   catch_all: true
+  examples:
+    - 'g a .                   # stage everything in the current directory'
+    - 'g a -u                  # stage modified/deleted tracked files (shell alias: gau)'
+    - 'g a -A                  # stage all changes, including new files (shell alias: gaA)'
+    - 'g a -p                  # interactively stage hunks'
 
 - name: commit
   alias: c
-  help: The git commit command
+  help: |-
+    Record staged changes to the repository.
+    With no arguments, opens an interactive picker (Amend, Amend no edit,
+    Fixup, Squash) to build the commit for you. Otherwise passes through to
+    `git commit` with any flags/args you supply.
   catch_all: true
+  examples:
+    - 'g c                     # interactive commit-type picker'
+    - 'g c -m "fix: typo"      # commit staged changes with a message'
+    - 'g c --amend             # amend the previous commit (shell alias: gca)'
+    - 'g c --amend --no-edit   # amend without editing the message (shell alias: gcan)'
 
 - name: push
   alias: ph
-  help: The git push command
+  help: |-
+    Update remote refs along with associated objects.
+    Passes through to `git push` and accepts any of its flags/args.
   catch_all: true
+  examples:
+    - 'g ph                    # push current branch (shell alias: gph)'
+    - 'g ph -f                 # force push (shell alias: gpf)'
+    - 'g ph origin --tags      # push all tags (shell alias: gpt)'
+    - 'g ph --set-upstream origin <branch>   # push and set upstream (shell alias: gpsu)'
 
 - name: pull
   alias: pl
-  help: The git pull command
+  help: |-
+    Fetch from and integrate with another repository or local branch.
+    Passes through to `git pull` and accepts any of its flags/args.
   catch_all: true
+  examples:
+    - 'g pl                    # pull the current branch (shell alias: gpl)'
+    - 'g pl --rebase           # pull and rebase local commits on top'
+    - 'g pl origin main        # pull a specific remote branch'
 
 - name: fetch
   alias: f
-  help: The git fetch command
+  help: |-
+    Download objects and refs from another repository.
+    Passes through to `git fetch` and accepts any of its flags/args.
   catch_all: true
+  examples:
+    - 'g f                     # fetch from the default remote'
+    - 'g f --prune             # fetch and remove stale remote refs (shell alias: gfp)'
+    - 'g f --all               # fetch from all remotes'
 
 - name: rebase
   alias: r
-  help: The git rebase command
+  help: |-
+    Reapply commits on top of another base.
+    With no arguments, walks you through an interactive flow: pick a target
+    branch, then a base (merge-base, HEAD~, or a commit chosen from the log)
+    and rebases the current branch onto it with --autosquash. Otherwise passes
+    through to `git rebase` with any flags/args you supply.
   catch_all: true
+  examples:
+    - 'g r                     # interactive guided rebase (shell alias: gr)'
+    - 'g r --continue          # continue after resolving conflicts (shell alias: grc)'
+    - 'g r --abort             # cancel an in-progress rebase'
+    - 'g r --autosquash -i --onto main HEAD~1 <branch>   # squash onto main (shell alias: grm)'
 
 - name: reset
   alias: rt
-  help: The git reset command
+  help: |-
+    Reset the current HEAD to a specified state.
+    Passes through to `git reset` and accepts any of its flags/args.
   catch_all: true
+  examples:
+    - 'g rt HEAD~1             # undo last commit, keep changes in the working tree'
+    - 'g rt --soft HEAD~1      # undo last commit, keep changes staged'
+    - 'g rt --hard origin/<branch>   # discard local changes to match remote (shell alias: grh)'
 
 - name: restore
   alias: re
-  help: The git restore command
+  help: |-
+    Restore working tree files.
+    Passes through to `git restore` and accepts any of its flags/args.
   catch_all: true
+  examples:
+    - 'g re file.txt           # discard unstaged changes to a file'
+    - 'g re --staged file.txt  # unstage a file, keeping its changes'
+    - 'g re "*"                # discard all unstaged changes (shell alias: grestA)'
 
 - name: cherry-pick
   alias: cp
-  help: The git cherry-pick command
+  help: |-
+    Apply the changes introduced by existing commits.
+    Passes through to `git cherry-pick` and accepts any of its flags/args.
   catch_all: true
+  examples:
+    - 'g cp <commit>           # apply a commit onto the current branch (shell alias: gcp)'
+    - 'g cp <commitA> <commitB>   # cherry-pick multiple commits'
+    - 'g cp --continue         # continue after resolving conflicts'
+    - 'g cp --abort            # cancel the cherry-pick'
 
 - name: tag
   alias: t
-  help: The git tag command
+  help: |-
+    Create, list, or delete tags.
+    Passes through to `git tag`. With --sync, pushes all tags to origin
+    after the tag operation completes.
   catch_all: true
   flags:
     - long: --sync
       short: -s
-      help: Sync tags with remote after creating a new tag
+      help: Push all tags to origin after creating the tag
+  examples:
+    - 'g t                     # list existing tags (shell alias: gt)'
+    - 'g t v1.2.0              # create a lightweight tag'
+    - 'g t v1.2.0 --sync       # create a tag and push tags to origin (shell alias: gts)'
+    - 'g t -d v1.2.0           # delete a local tag'
 
 - name: clean
-  help: Clean local git
+  help: |-
+    Prune and delete merged local branches.
+    Fetches with --prune, then finds local branches whose upstream is gone
+    ([gone]) and lets you choose which to delete (select none to delete all).
+  examples:
+    - 'g clean                 # prune remotes and delete gone branches (shell alias: gclean)'
 
 - name: update
   alias: u
-  help: Updates a branch with the latest changes from the remote
+  help: |-
+    Update a branch with the latest changes from the remote.
+    Checks out the branch (interactive picker if none is given), fetches with
+    --prune, and pulls. Returns to your previous branch afterwards unless
+    --stay is set.
   args:
     - name: branch
-      help: The branch to update
+      help: The branch to update (omit to pick interactively)
   flags:
     - long: --stay
       short: -s
-      help: Stay on the current branch after updating
+      help: Stay on the updated branch instead of returning to the previous one
+  examples:
+    - 'g update                # pick a branch to update, then return (shell alias: gup)'
+    - 'g update main           # update main, then return (shell alias: gupm)'
+    - 'g update --stay         # update a chosen branch and stay on it (shell alias: gups)'
+    - 'g update main --stay    # update main and stay on it (shell alias: gupms)'
 
 - name: completions
-  help: Generate git command completions
+  help: |-
+    Generate shell completion definitions for the git-cli tool.
+    Intended to be evaluated from your shell profile, e.g. eval "$(g completions)".
+  examples:
+    - 'eval "$(g completions)"   # load completions in the current shell'

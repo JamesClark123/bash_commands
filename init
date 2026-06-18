@@ -118,3 +118,6 @@ alias gupm='g update main'
 alias gups='g update --stay'
 alias gupms='g update main --stay'
 
+# # Help
+alias fuck='g --help'
+
