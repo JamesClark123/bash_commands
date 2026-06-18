@@ -17,8 +17,7 @@ if [[ ${#other_args[@]} -eq 0 ]]; then
     base="HEAD~"
 
     if [[ "$selectBaseMode" == "Select" ]]; then
-        baseCommits=$(git log --oneline)
-        base=$(gum filter "${baseCommits[@]}" --header "Select base" --limit 1 | awk '{print $1}')
+        base=$(git log --oneline | gum filter --header "Select starting commit (this is non-inclusive)" --limit 1 | awk '{print $1}')
     fi
 
     if [[ "$selectBaseMode" == "Merge base" ]]; then

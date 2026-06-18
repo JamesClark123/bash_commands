@@ -38,6 +38,13 @@ eval "$(starship init zsh)"
 
 export STARSHIP_CONFIG="$BASH_COMMANDS_DIR/config.starship.toml" 
 
+# 
+# Add bashly access. Uncomment this line or copy to the top level zsh file to enable development
+# 
+
+# alias bashly='docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly'
+
+
 #
 # Add cli aliases for the git-cli tool.
 #
@@ -59,6 +66,7 @@ eval "$(g completions)"
 # # 
 
 # # Log / status
+alias gl='g l'
 alias glg='g l -g'
 alias gs='g s'
 alias gds='g d --stat'
