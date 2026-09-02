@@ -112,6 +112,14 @@ alias gcp='g cp'
 # # Branch cleanup — deletes local branches whose upstream is gone
 alias gclean="g clean"
 
+# # Stacked branches
+alias gcus='g cus'
+alias gpfs='g pfs'
+alias gsu='g su'
+alias gsd='g sd'
+alias gsus='g sus'
+alias gsds='g sds'
+
 # # Update main and return to previous branch
 alias gup='g update'
 alias gupm='g update main'

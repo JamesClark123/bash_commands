@@ -211,6 +211,72 @@ commands:
     - 'g update --stay         # update a chosen branch and stay on it (shell alias: gups)'
     - 'g update main --stay    # update main and stay on it (shell alias: gupms)'
 
+- name: commit-update-stack
+  alias: cus
+  help: |-
+    Commit, then restack every branch built on top of the replaced commit.
+    Accepts and passes through any `git commit` flags/args (with no arguments
+    it opens the same interactive picker as `g commit`). After committing it
+    finds the terminal branches stacked downstream of the old commit and
+    rebases each onto the new commit with `git rebase --update-refs`, keeping
+    intermediate branch refs in sync across every fork of the stack. Returns
+    to your starting branch when done.
+  catch_all: true
+  examples:
+    - 'g cus                    # interactive commit-type picker, then restack (shell alias: gcus)'
+    - 'g cus --amend --no-edit  # amend in place and restack downstream branches'
+    - 'g cus -m "fix: typo"     # add a commit and move stacked branches on top of it'
+
+- name: push-force-stack
+  alias: pfs
+  help: |-
+    Force push the current branch and every branch stacked downstream of it.
+    Walks all branches whose history contains the current commit (following
+    every fork of the stack) and force pushes each one that has a matching
+    origin branch; branches without a remote counterpart are skipped.
+  examples:
+    - 'g pfs                    # force push the whole stack from here up (shell alias: gpfs)'
+
+- name: stack-up
+  alias: su
+  help: |-
+    Move up the stack, away from main, to a child of the current commit.
+    If the commit has multiple children a picker is shown. Lands on the
+    branch pointing at the chosen commit when one exists, otherwise checks
+    out the commit directly (detached HEAD).
+  examples:
+    - 'g su                     # move one commit toward the stack tip (shell alias: gsu)'
+
+- name: stack-down
+  alias: sd
+  help: |-
+    Move down the stack, toward main, to a parent of the current commit.
+    If the commit has multiple parents (a merge) a picker is shown. Lands on
+    the branch pointing at the chosen commit when one exists, otherwise
+    checks out the commit directly (detached HEAD).
+  examples:
+    - 'g sd                     # move one commit toward main (shell alias: gsd)'
+
+- name: stack-up-select
+  alias: sus
+  help: |-
+    Pick a downstream branch of the current commit and check it out.
+    Lists every branch stacked on top of the current commit (across all forks
+    of the stack, nearest first) in a picker; auto-selects when there is only
+    one candidate.
+  examples:
+    - 'g sus                    # pick any branch above this one (shell alias: gsus)'
+
+- name: stack-down-select
+  alias: sds
+  help: |-
+    Pick an upstream branch of the current commit and check it out.
+    Lists every branch below the current commit (nearest first), searching no
+    farther back than the merge base with main; auto-selects when there is
+    only one candidate.
+  examples:
+    - 'g sds                    # pick any branch below this one (shell alias: gsds)'
+
 - name: completions
   help: |-
     Generate shell completion definitions for the git-cli tool.
